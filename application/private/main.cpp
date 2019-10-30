@@ -93,6 +93,8 @@ int main(int argc, char **argv)
 				break;
 			if (!Gui->Init(CurrentWindowSize, "Nibbler"))
 				break;
+			if (!Gui->LoadImage("slime_face_2.png"))
+				break;
 			CurrentBackend = WantedBackend;
 		}
 
@@ -172,10 +174,12 @@ int main(int argc, char **argv)
 			// Draw background
 			Gui->FillBackground({100, 100, 10, 255});
 			// Draw snake head
-			Gui->DrawRectangle(S.Body[0] * BlockSize, BlockSize, ColorGrey);
+			// Gui->DrawRectangle(S.Body[0] * BlockSize, BlockSize, ColorGrey);
+			Gui->DrawImage(S.Body[0] * BlockSize, BlockSize, NULL);
 			// Draw snake body
 			for (uint8_t i = 1; i < S.Length; i++)
-				Gui->DrawRectangle(S.Body[i] * BlockSize, BlockSize, (i & 1) ? ColorGreen : ColorYellow);
+				Gui->DrawImage(S.Body[i] * BlockSize, BlockSize, NULL);
+				// Gui->DrawRectangle(S.Body[i] * BlockSize, BlockSize, (i & 1) ? ColorGreen : ColorYellow);
 			Gui->DrawRectangle(Fruit * BlockSize, BlockSize, ColorRed);
 		}
 		Gui->EndFrame();

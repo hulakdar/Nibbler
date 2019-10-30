@@ -16,6 +16,9 @@ bool SFMLGuiProvider::Init(IVec2 WindowSize, const char *WindowName) {
 		return false;
     return true;
 }
+bool SFMLGuiProvider::LoadImage(const char *FilePath) {
+	return true;
+}
 bool SFMLGuiProvider::IsKeyDown(EKey K) {
 	switch (K)
 	{
