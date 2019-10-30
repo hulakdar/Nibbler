@@ -15,7 +15,10 @@ void put_error(std::string err) {
 
 bool SDLGuiProvider::Init(IVec2 WindowSize, const char *WindowName) {
 	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER | SDL_INIT_EVENTS | SDL_INIT_JOYSTICK) < 0)
+	{
 		put_error(SDL_GetError());
+		return false;
+	}
 	// if (IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG) < 0)
 	// 	put_error(SDL_GetError());
 	// if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096) < 0)
@@ -26,7 +29,10 @@ bool SDLGuiProvider::Init(IVec2 WindowSize, const char *WindowName) {
 		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
 		WindowSize.x, WindowSize.y, SDL_WINDOW_SHOWN);
 	if (!Window)
+	{
 		put_error(SDL_GetError());
+		return false;
+	}
     return true;
 }
 bool SDLGuiProvider::IsKeyDown(EKey K) {
@@ -36,6 +42,12 @@ bool SDLGuiProvider::ShouldExit() {
     return false;
 }
 void SDLGuiProvider::Tick() {
+	SDL_Event e;
+	while (SDL_PollEvent(&e))
+	{
+		if (e.type == SDL_QUIT)
+			SDL_Quit();
+	}
 }
 void SDLGuiProvider::FillBackground(Color C) {
 }
