@@ -47,7 +47,7 @@ int main(int argc, char **argv)
 		"libgui_sigil.dylib",
 	};
 	EBackend CurrentBackend = EBackendCOUNT;
-	EBackend WantedBackend = EBackendSigil;
+	EBackend WantedBackend = EBackendDefault;
 
 	IGuiProvider *Gui = nullptr;
 	void *lib = nullptr;
