@@ -1,4 +1,5 @@
 #include "GuiProvider.h"
+#include <allegro5/allegro.h>
 
 class AllegroGuiProvider : public IGuiProvider 
 {
