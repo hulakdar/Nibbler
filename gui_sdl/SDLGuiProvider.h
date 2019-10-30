@@ -1,16 +1,22 @@
 #include "GuiProvider.h"
 #include <SDL.h>
 #include <SDL_image.h>
+#include <string>
 
 class SDLGuiProvider : public IGuiProvider 
 {
 private:
     SDL_Window      *Window;
     SDL_Surface     *WindowSurface = NULL;
+    SDL_Renderer    *Renderer = NULL;
+    SDL_Texture     *Texture = NULL;
     bool            RequestingExit = false;
     bool            keyStates[256];
+
+    SDL_Texture* loadTexture( std::string path );
 public:
     virtual bool Init(IVec2 WindowSize, const char *WindowName) override;
+    virtual bool LoadImage(const char *ImagePath) override;
     virtual bool IsKeyDown(EKey K) override;
     virtual bool ShouldExit() override;
     virtual void Tick() override;

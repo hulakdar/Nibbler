@@ -5,6 +5,7 @@ class AllegroGuiProvider : public IGuiProvider
 {
 public:
     virtual bool Init(IVec2 WindowSize, const char *WindowName) override;
+    virtual bool LoadImage(const char *ImagePath) override;
     virtual bool IsKeyDown(EKey K) override;
     virtual bool ShouldExit() override;
     virtual void Tick() override;

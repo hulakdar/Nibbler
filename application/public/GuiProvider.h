@@ -4,6 +4,7 @@ class IGuiProvider
 {
 public:
     virtual bool Init(IVec2 WindowSize, const char *WindowName) = 0;
+    virtual bool LoadImage(const char *ImagePath) = 0;
     virtual bool IsKeyDown(EKey K) = 0;
     virtual bool ShouldExit() = 0;
     virtual void Tick() = 0;
