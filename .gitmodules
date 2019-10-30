@@ -1,9 +1,6 @@
 [submodule "3rdParty/SDL2"]
 	path = 3rdParty/SDL2
 	url = https://github.com/spurious/SDL-mirror
-[submodule "3rdParty/allegro5"]
-	path = 3rdParty/allegro5
-	url = https://github.com/liballeg/allegro5
 [submodule "3rdParty/SFML"]
 	path = 3rdParty/SFML
 	url = https://github.com/SFML/SFML
@@ -16,3 +13,6 @@
 [submodule "3rdParty/SDL_image"]
 	path = 3rdParty/SDL_image
 	url = https://github.com/SDL-mirror/SDL_image
+[submodule "3rdParty/sigil"]
+	path = 3rdParty/sigil
+	url = https://github.com/hulakdar/SIGIL.git

@@ -21,10 +21,6 @@ if(NOT EXISTS "${PROJECT_SOURCE_DIR}/3rdParty/SFML/CMakeLists.txt")
     message(FATAL_ERROR "SFML submodule was not downloaded! GIT_SUBMODULE was turned off or failed. Please update submodules and try again.")
 endif()
 
-if(NOT EXISTS "${PROJECT_SOURCE_DIR}/3rdParty/allegro5/CMakeLists.txt")
-    message(FATAL_ERROR "allegro5 submodule was not downloaded! GIT_SUBMODULE was turned off or failed. Please update submodules and try again.")
-endif()
-
 if(NOT EXISTS "${PROJECT_SOURCE_DIR}/3rdParty/glm/CMakeLists.txt")
     message(FATAL_ERROR "glm submodule was not downloaded! GIT_SUBMODULE was turned off or failed. Please update submodules and try again.")
 endif()
@@ -59,22 +55,13 @@ option( SDL_ATOMIC		FALSE )
 option( SDL_AUDIO		FALSE )
 add_subdirectory( SDL2 )
 add_library(SDL2::SDL2 ALIAS SDL2-static)
-option( BUILD_SHARED_LIBS	FALSE )
 add_subdirectory( SDL_image )
 target_compile_definitions(SDL2_image PRIVATE -DSDL_IMAGE_USE_COMMON_BACKEND)
 add_subdirectory( SDL_ttf )
 target_include_directories(SDL2_ttf PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/SDL_ttf/external/freetype-2.9.1/include)
 
-option (WANT_PHYSFS FALSE)
-option (WANT_AUDIO FALSE)
-option (WANT_VIDEO FALSE)
-option (WANT_DEMO FALSE)
-option (WANT_DOCS FALSE)
-option (WANT_TESTS FALSE)
-option (WANT_EXAMPLES FALSE)
-add_subdirectory( allegro5 )
-#target_include_directories(ALLEGRO PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
-
+add_subdirectory( sigil )
+target_include_directories(sigil PRIVATE /usr/include/malloc)
 ## imgui
 ##add_library (imgui-static STATIC	${CMAKE_CURRENT_SOURCE_DIR}/imgui/imgui.cpp
 #${CMAKE_CURRENT_SOURCE_DIR}/imgui/imgui_demo.cpp

@@ -44,10 +44,10 @@ int main(int argc, char **argv)
 	const char *libs[EBackendCOUNT] = {
 		"libgui_sfml.dylib",
 		"libgui_sdl.dylib",
-		"libgui_allegro.dylib",
+		"libgui_sigil.dylib",
 	};
 	EBackend CurrentBackend = EBackendCOUNT;
-	EBackend WantedBackend = EBackendSDL;
+	EBackend WantedBackend = EBackendSigil;
 
 	IGuiProvider *Gui = nullptr;
 	void *lib = nullptr;
@@ -84,10 +84,16 @@ int main(int argc, char **argv)
 
 			lib = dlopen(libs[WantedBackend], 0);
 			if (!lib)
+			{
+				printf("Coudn't open library %s \n", libs[WantedBackend]);
 				break;
+			}
 			ProviderGetter GetGui = (ProviderGetter)dlsym(lib, "GetProvider");
 			if (!GetGui)
+			{
+				printf("Coudn't find function GetProvider \n");
 				break;
+			}
 			Gui = GetGui();
 			if (!Gui)
 				break;
@@ -188,7 +194,7 @@ int main(int argc, char **argv)
 		else if (Gui->IsKeyDown(EKey1))
 			WantedBackend = EBackendSDL;
 		else if (Gui->IsKeyDown(EKey1))
-			WantedBackend = EBackendAllegro;
+			WantedBackend = EBackendSigil;
 	}
 	cleanup();
 	return 0;

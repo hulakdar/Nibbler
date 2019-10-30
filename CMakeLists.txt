@@ -6,6 +6,8 @@ add_subdirectory(gui_sdl)
 target_include_directories(gui_sdl PUBLIC application/public)
 add_subdirectory(gui_sfml)
 target_include_directories(gui_sfml PUBLIC application/public)
+add_subdirectory(gui_sigil)
+target_include_directories(gui_sigil PUBLIC application/public)
 
 add_executable(${PROJECT_NAME} ${NIBBLER_SOURCES})
 
@@ -13,7 +15,7 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-set_target_properties( ${PROJECT_NAME}  gui_sdl gui_sfml ##gui_allegro
+set_target_properties( ${PROJECT_NAME}  gui_sdl gui_sfml gui_sigil
     PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/.."
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/.."

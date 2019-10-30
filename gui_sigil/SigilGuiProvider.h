@@ -1,6 +1,6 @@
 #include "GuiProvider.h"
 
-class AllegroGuiProvider : public IGuiProvider 
+class SigilGuiProvider : public IGuiProvider 
 {
 public:
     virtual bool Init(IVec2 WindowSize, const char *WindowName) override;
@@ -13,5 +13,5 @@ public:
     virtual void DrawText(FVec2 Origin, const char* Text, Color C) override;
     virtual void EndFrame() override;
     virtual void Deinit() override;
-    virtual ~AllegroGuiProvider() override;
+    virtual ~SigilGuiProvider() override;
 };

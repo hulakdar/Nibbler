@@ -15,7 +15,7 @@ enum EBackend
     EBackendSFML,
     EBackendDefault = EBackendSFML,
     EBackendSDL,
-    EBackendAllegro,
+    EBackendSigil,
     EBackendCOUNT
 };
 
