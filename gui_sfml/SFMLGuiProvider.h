@@ -1,10 +1,11 @@
 #include "GuiProvider.h"
 #include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/Font.hpp>
 
 class SFMLGuiProvider : public IGuiProvider 
 {
-    sf::RenderWindow  Window;
-
+    sf::RenderWindow    Window;
+    sf::Font            Font;
 public:
     virtual bool Init(IVec2 WindowSize, const char *WindowName) override;
     virtual bool IsKeyDown(EKey K) override;

@@ -4,7 +4,12 @@
 class SDLGuiProvider : public IGuiProvider 
 {
 private:
+<<<<<<< HEAD
     SDL_Window   *Window;
+=======
+    SDL_Window      *Window;
+    bool            RequestingExit = false;
+>>>>>>> master
 public:
     virtual bool Init(IVec2 WindowSize, const char *WindowName) override;
     virtual bool IsKeyDown(EKey K) override;
