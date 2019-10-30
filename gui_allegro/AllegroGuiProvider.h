@@ -1,10 +1,7 @@
 #include "GuiProvider.h"
-#include <SDL.h>
 
-class SDLGuiProvider : public IGuiProvider 
+class AllegroGuiProvider : public IGuiProvider 
 {
-private:
-    SDL_Window   *Window;
 public:
     virtual bool Init(IVec2 WindowSize, const char *WindowName) override;
     virtual bool IsKeyDown(EKey K) override;
@@ -16,5 +13,5 @@ public:
     virtual void DrawText(FVec2 Origin, const char* Text, Color C) override;
     virtual void EndFrame() override;
     virtual void Deinit() override;
-    virtual ~SDLGuiProvider() override;
+    virtual ~AllegroGuiProvider() override;
 };

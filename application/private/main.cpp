@@ -46,8 +46,8 @@ int main(int argc, char **argv)
 		"libgui_sdl.dylib",
 		"libgui_allegro.dylib",
 	};
-	EBackend CurrentBackend = EBackendCOUNT;
-	EBackend WantedBackend = EBackendDefault;
+	EBackend currentBackend = EBackendCOUNT;
+	EBackend wantedBackend = EBackendSDL;
 
 	IGuiProvider *Gui = nullptr;
 	void *lib = nullptr;
