@@ -39,14 +39,14 @@ bool SDLGuiProvider::IsKeyDown(EKey K) {
     return false;
 }
 bool SDLGuiProvider::ShouldExit() {
-    return false;
+	return RequestingExit;
 }
 void SDLGuiProvider::Tick() {
 	SDL_Event e;
 	while (SDL_PollEvent(&e))
 	{
 		if (e.type == SDL_QUIT)
-			SDL_Quit();
+			RequestingExit = true;
 	}
 }
 void SDLGuiProvider::FillBackground(Color C) {
