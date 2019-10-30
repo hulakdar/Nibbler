@@ -12,11 +12,21 @@ extern "C" {
 bool SFMLGuiProvider::Init(IVec2 WindowSize, const char *WindowName) {
 	Window.create(sf::VideoMode(WindowSize.x, WindowSize.y), WindowName);
 	Window.setVerticalSyncEnabled(true);
+	if (!Font.loadFromFile("resources/future.ttf"))
+		return false;
     return true;
 }
 bool SFMLGuiProvider::IsKeyDown(EKey K) {
 	switch (K)
 	{
+	case EKey1:
+		return sf::Keyboard::isKeyPressed(sf::Keyboard::Num1);
+	case EKey2:
+		return sf::Keyboard::isKeyPressed(sf::Keyboard::Num2);
+	case EKey3:
+		return sf::Keyboard::isKeyPressed(sf::Keyboard::Num3);
+	case EKeySPACE:
+		return sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
 	case EKeyUP:
 		return sf::Keyboard::isKeyPressed(sf::Keyboard::Up);
 	case EKeyDOWN:
