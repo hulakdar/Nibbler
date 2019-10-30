@@ -1,8 +1,11 @@
-cmake_minimum_required(VERSION 3.13)
+cmake_minimum_required(VERSION 3.14)
 
 project(nibbler LANGUAGES CXX)
 add_subdirectory(application)
 add_subdirectory(gui_sdl)
+target_include_directories(gui_sdl PUBLIC application/public)
+add_subdirectory(gui_sfml)
+target_include_directories(gui_sfml PUBLIC application/public)
 
 add_executable(${PROJECT_NAME} ${NIBBLER_SOURCES})
 
@@ -10,7 +13,7 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
-set_target_properties( ${PROJECT_NAME}  gui_sdl ##gui_sfml gui_allegro
+set_target_properties( ${PROJECT_NAME}  gui_sdl gui_sfml ##gui_allegro
     PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/.."
     RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/.."
@@ -19,10 +22,6 @@ set_target_properties( ${PROJECT_NAME}  gui_sdl ##gui_sfml gui_allegro
 add_subdirectory(3rdParty)
 
 find_package(OpenGL 4.1 REQUIRED)
-
-
-source_group("Source Files" FILES ${NIBBLER_LOCAL_SOURCES})
-source_group("Header File" FILES ${NIBBLER_LOCAL_INCLUDES})
 
 if (APPLE)
 	target_compile_options(nibbler PRIVATE -Wall -Wextra) ########### TODO -Werror)
@@ -34,7 +33,8 @@ set_target_properties(${PROJECT_NAME} PROPERTIES
 	CXX_EXTENSIONS NO
 	USE_FOLDERS ON)
 
-target_include_directories(${PROJECT_NAME} PRIVATE inc/)
+target_include_directories(${PROJECT_NAME} PRIVATE application/private)
+target_include_directories(${PROJECT_NAME} PUBLIC application/public)
 
 target_link_libraries (${PROJECT_NAME} PRIVATE
 	glm

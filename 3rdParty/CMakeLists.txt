@@ -17,6 +17,14 @@ if(NOT EXISTS "${PROJECT_SOURCE_DIR}/3rdParty/sdl2/CMakeLists.txt")
     message(FATAL_ERROR "sdl2 submodule was not downloaded! GIT_SUBMODULE was turned off or failed. Please update submodules and try again.")
 endif()
 
+if(NOT EXISTS "${PROJECT_SOURCE_DIR}/3rdParty/SFML/CMakeLists.txt")
+    message(FATAL_ERROR "SFML submodule was not downloaded! GIT_SUBMODULE was turned off or failed. Please update submodules and try again.")
+endif()
+
+if(NOT EXISTS "${PROJECT_SOURCE_DIR}/3rdParty/allegro5/CMakeLists.txt")
+    message(FATAL_ERROR "allegro5 submodule was not downloaded! GIT_SUBMODULE was turned off or failed. Please update submodules and try again.")
+endif()
+
 if(NOT EXISTS "${PROJECT_SOURCE_DIR}/3rdParty/glm/CMakeLists.txt")
     message(FATAL_ERROR "glm submodule was not downloaded! GIT_SUBMODULE was turned off or failed. Please update submodules and try again.")
 endif()
@@ -31,9 +39,8 @@ set( BUILD_SHARED_LIBS OFF CACHE BOOL "Build only static libs" )
 ## glm
 add_library(glm INTERFACE)
 target_include_directories(glm INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/glm/)
-add_library(glm::glm ALIAS glm)
 
-## SFML
+### SFML
 set(SFML_STATIC_LIBRARIES TRUE)
 set(SFML_BUILD_EXAMPLES FALSE)
 set(SFML_BUILD_DOC FALSE)
@@ -43,16 +50,14 @@ set(SFML_BUILD_AUDIO FALSE)
 add_subdirectory( SFML )
 
 ## SDL2
-set( SDL_STATIC		TRUE  )
-set( SDL_SHARED		FALSE )
+set(    SDL_STATIC		TRUE  )
+set(    SDL_SHARED		FALSE )
 option( SDL_ATOMIC		FALSE )
 option( SDL_AUDIO		FALSE )
-option( SDL_LOADSO 	FALSE )
+option( SDL_LOADSO   	FALSE )
 option( SDL_FILESYSTEM	FALSE )
-option( SDL_DLOPEN 	FALSE )
-
+option( SDL_DLOPEN 	    FALSE )
 add_subdirectory( SDL2 )
-add_library(SDL2::SDL2 ALIAS SDL2-static)
 
 option (WANT_PHYSFS FALSE)
 option (WANT_AUDIO FALSE)

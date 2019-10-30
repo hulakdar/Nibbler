@@ -1,3 +1,4 @@
 nibbler
 *.dylib
 build/
+.vscode/
