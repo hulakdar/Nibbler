@@ -10,7 +10,6 @@ extern "C" {
 
 void put_error(std::string err) {
 	std::cout << err << std::endl;
-	exit(-1);
 }
 
 bool SDLGuiProvider::Init(IVec2 WindowSize, const char *WindowName) {
