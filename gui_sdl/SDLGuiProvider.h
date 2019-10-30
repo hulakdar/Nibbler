@@ -1,11 +1,14 @@
 #include "GuiProvider.h"
 #include <SDL.h>
+#include <SDL_image.h>
 
 class SDLGuiProvider : public IGuiProvider 
 {
 private:
     SDL_Window      *Window;
+    SDL_Surface     *WindowSurface = NULL;
     bool            RequestingExit = false;
+    bool            keyStates[256];
 public:
     virtual bool Init(IVec2 WindowSize, const char *WindowName) override;
     virtual bool IsKeyDown(EKey K) override;

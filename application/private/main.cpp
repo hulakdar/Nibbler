@@ -63,7 +63,7 @@ int main(int argc, char **argv)
 		}
 	};
 
-	IVec2 CurrentWindowSize{800, 800};
+	IVec2 CurrentWindowSize{400, 400};
 
 	Snake S;
 	IVec2 Fruit = RandomLocation();
@@ -104,7 +104,7 @@ int main(int argc, char **argv)
 
 		Gui->Tick();
 		if (CurrentGameState == EAreYouReady)
-		{
+		{	
 			Gui->FillBackground({0, 100, 250, 255});
 			if (Gui->IsKeyDown(EKeySPACE))
 			{
@@ -191,9 +191,9 @@ int main(int argc, char **argv)
 
 		if (Gui->IsKeyDown(EKey1))
 			WantedBackend = EBackendSFML;
-		else if (Gui->IsKeyDown(EKey1))
+		else if (Gui->IsKeyDown(EKey2))
 			WantedBackend = EBackendSDL;
-		else if (Gui->IsKeyDown(EKey1))
+		else if (Gui->IsKeyDown(EKey3))
 			WantedBackend = EBackendSigil;
 	}
 	cleanup();
