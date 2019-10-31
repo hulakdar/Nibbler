@@ -29,15 +29,12 @@ bool SDLGuiProvider::Init(IVec2 WindowSize, const char *WindowName) {
 		put_error(SDL_GetError());
 		return false;
 	}
-	SDL_SetHint( SDL_HINT_RENDER_VSYNC, "1");
-	// WindowSurface = SDL_GetWindowSurface(Window);
-	Renderer = SDL_CreateRenderer( Window, -1, SDL_RENDERER_ACCELERATED );
+	Renderer = SDL_CreateRenderer( Window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 	if (!Renderer)
 	{
 		put_error(SDL_GetError());
 		return false;
 	}
-	
 
 	for (short i = 0; i < 255; i++) {
 		keyStates[i] = false;
@@ -46,6 +43,7 @@ bool SDLGuiProvider::Init(IVec2 WindowSize, const char *WindowName) {
 }
 
 Image * SDLGuiProvider::LoadImage(const char *FilePath) {
+	SDL_SetHint("SDL_HINT_RENDER_SCALE_QUALITY", 0);
     SDL_Surface* surface = IMG_Load( FilePath );
     if (!surface) {
         printf("Unable to load image %s! SDL_image Error: %s\n", FilePath, IMG_GetError());
@@ -108,21 +106,21 @@ void SDLGuiProvider::Tick() {
 	}
 }
 void SDLGuiProvider::FillBackground(Color C) {
-	//SDL_FillRect(WindowSurface, NULL, SDL_MapRGB(WindowSurface->format, C.r, C.g, C.b));
+	SDL_SetRenderDrawColor(Renderer, C.r, C.g, C.b, C.a);
+	SDL_RenderClear(Renderer);
 }
 void SDLGuiProvider::DrawRectangle(FVec2 Origin, FVec2 Size, Color C) {
-	//SDL_Rect rect {(int)Origin.x, (int)Origin.y, (int)Size.x, (int)Size.y};
-	//SDL_FillRect(WindowSurface, &rect, SDL_MapRGB(WindowSurface->format, C.r, C.g, C.b));
+	SDL_SetRenderDrawColor(Renderer, C.r, C.g, C.b, C.a);
+	SDL_Rect rect {(int)Origin.x, (int)Origin.y, (int)Size.x, (int)Size.y};
+	SDL_RenderFillRect(Renderer, &rect);
 }
 void SDLGuiProvider::DrawImage(FVec2 Origin, FVec2 Size, Image *I) {
-	//SDL_RenderClear(Renderer);
 	SDL_Rect rect {(int)Origin.x, (int)Origin.y, (int)Size.x, (int)Size.y};
 	SDL_RenderCopy( Renderer, (SDL_Texture *)I, NULL, &rect );
 }
 void SDLGuiProvider::DrawText(FVec2 Origin, const char* Text, Color C) {
 }
 void SDLGuiProvider::EndFrame() {
-	//SDL_UpdateWindowSurface(Window);
 	SDL_RenderPresent(Renderer);
 }
 void SDLGuiProvider::Deinit() {

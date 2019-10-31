@@ -47,20 +47,27 @@ int main(int argc, char **argv)
 		"libgui_sigil.dylib",
 	};
 	EBackend CurrentBackend = EBackendCOUNT;
-	EBackend WantedBackend = EBackendSDL;
+	EBackend WantedBackend = EBackendSFML;
 
 	IGuiProvider	*Gui = nullptr;
 	void			*lib = nullptr;
 	Image			*img = nullptr;
 
-	auto cleanup = [&Gui, &lib]() {
+	auto cleanup = [&Gui, &lib, &img]() {
 		if (Gui)
 		{
+			if (img)
+			{
+				Gui->FreeImage(img);
+				img = nullptr;
+			}
 			Gui->Deinit();
+			Gui = nullptr;
 		}
 		if (lib)
 		{
 			dlclose(lib);
+			lib = nullptr;
 		}
 	};
 
@@ -191,7 +198,7 @@ int main(int argc, char **argv)
 			// Draw background
 			Gui->FillBackground({100, 100, 10, 255});
 			// Draw snake head
-			Gui->DrawRectangle(S.Body[0] * BlockSize, BlockSize, ColorGrey);
+			Gui->DrawImage(S.Body[0] * BlockSize, BlockSize, img);
 			// Draw snake body
 			for (uint8_t i = 1; i < S.Length; i++)
 				Gui->DrawRectangle(S.Body[i] * BlockSize, BlockSize, (i & 1) ? ColorGreen : ColorYellow);

@@ -1,6 +1,7 @@
 #include "SFMLGuiProvider.h"
 #include <SFML/Window.hpp>
 #include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics/Sprite.hpp>
 
 extern "C" {
 	IGuiProvider *GetProvider() {
@@ -10,7 +11,7 @@ extern "C" {
 }
 
 bool SFMLGuiProvider::Init(IVec2 WindowSize, const char *WindowName) {
-	Window.create(sf::VideoMode(WindowSize.x * 2, WindowSize.y * 2), WindowName);
+	Window.create(sf::VideoMode(WindowSize.x, WindowSize.y), WindowName);
 	Window.setVerticalSyncEnabled(true);
 	if (!Font.loadFromFile("resources/future.ttf"))
 		return false;
@@ -20,9 +21,16 @@ bool SFMLGuiProvider::Init(IVec2 WindowSize, const char *WindowName) {
 
 Image *SFMLGuiProvider::LoadImage(const char *ImagePath)
 {
- return (Image*)42;
+	sf::Texture *result = new sf::Texture();
+	
+	if (result->loadFromFile(ImagePath))
+		return (Image *)result;
+	delete result;
+	return nullptr;
 }
 void SFMLGuiProvider::FreeImage(Image *Image) {
+	sf::Texture *target = (sf::Texture*)Image;
+	delete target;
 }
 
 bool SFMLGuiProvider::IsKeyDown(EKey K) {
@@ -72,6 +80,15 @@ void SFMLGuiProvider::DrawRectangle(FVec2 Origin, FVec2 Size, Color C) {
 	Window.draw(Rectangle);
 }
 void SFMLGuiProvider::DrawImage(FVec2 Origin, FVec2 Size, struct Image *I) {
+	sf::Sprite sprite;
+	sf::Texture *texture = (sf::Texture*)I;
+	sf::Vector2u size = texture->getSize();
+	sf::Vector2f scale(Size.x / size.x, Size.y / size.y);
+
+	sprite.setTexture(*texture);
+	sprite.setPosition(sf::Vector2f(Origin.x, Origin.y));
+	sprite.setScale(scale);
+	Window.draw(sprite);
 }
 void SFMLGuiProvider::DrawText(FVec2 Origin, const char* Text, Color C) {
 }
