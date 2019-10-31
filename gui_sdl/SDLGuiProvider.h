@@ -1,4 +1,6 @@
 #include "GuiProvider.h"
+
+#include <SDL_ttf.h>
 #include <SDL.h>
 #include <SDL_image.h>
 #include <string>
@@ -9,6 +11,7 @@ private:
     SDL_Window      *Window = NULL;
     SDL_Surface     *WindowSurface = NULL;
     SDL_Renderer    *Renderer = NULL;
+    TTF_Font        *Font = NULL;
     bool            RequestingExit = false;
     bool            keyStates[256];
 public:

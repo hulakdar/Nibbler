@@ -59,7 +59,8 @@ Image *SDLGuiProvider::LoadImage(const char *FilePath) {
 }
 
 bool SDLGuiProvider::LoadFont(const char *FontPath) {
-	return true;
+	Font = TTF_OpenFont(FontPath, 12);
+	return Font != nullptr;
 }
 
 void SDLGuiProvider::FreeImage(Image *Image)
@@ -128,6 +129,7 @@ void SDLGuiProvider::EndFrame() {
 	SDL_RenderPresent(Renderer);
 }
 void SDLGuiProvider::Deinit() {
+	TTF_CloseFont(Font);
 	IMG_Quit();
 	SDL_DestroyRenderer(Renderer);
     SDL_DestroyWindow(Window);
