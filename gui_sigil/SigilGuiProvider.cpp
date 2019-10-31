@@ -10,38 +10,41 @@ extern "C" {
 
 bool SigilGuiProvider::Init(IVec2 WindowSize, const char *WindowName) {
 	slWindow(WindowSize.x, WindowSize.y, "SIGIL Shapes Example", 0);
+	slSetBackColor(0.0, 0.0, 0.0);
+	slSetAdditiveBlend(false);
     return true;
 }
 
 Image *SigilGuiProvider::LoadImage(const char *ImagePath) {
-	return (Image*)42;
+	int texture = slLoadTexture(ImagePath);
+	return (Image*)(size_t)texture;
 }
 
 void SigilGuiProvider::FreeImage(Image *Image) {
-
+	(void)Image;
 }
 
 bool SigilGuiProvider::IsKeyDown(EKey K) {
 	switch (K)
 	{
-	// case EKey1:
-	// 	return sf::Keyboard::isKeyPressed(sf::Keyboard::Num1);
-	// case EKey2:
-	// 	return sf::Keyboard::isKeyPressed(sf::Keyboard::Num2);
-	// case EKey3:
-	// 	return sf::Keyboard::isKeyPressed(sf::Keyboard::Num3);
-	 case EKeySPACE:
-	 	return slGetKey('W');
-	// case EKeyUP:
-	// 	return sf::Keyboard::isKeyPressed(sf::Keyboard::Up);
-	// case EKeyDOWN:
-	// 	return sf::Keyboard::isKeyPressed(sf::Keyboard::Down);
-	// case EKeyLEFT:
-	// 	return sf::Keyboard::isKeyPressed(sf::Keyboard::Left);
-	// case EKeyRIGHT:
-	// 	return sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
-	// case EKeyESC:
-	// 	return sf::Keyboard::isKeyPressed(sf::Keyboard::Escape);
+	case EKey1:
+		return slGetKey(49);
+	case EKey2:
+		return slGetKey(50);
+	case EKey3:
+		return slGetKey(51);
+	case EKeySPACE:
+		return slGetKey(32);
+	case EKeyUP:
+		return slGetKey(264);
+	case EKeyDOWN:
+		return slGetKey(265);
+	case EKeyLEFT:
+		return slGetKey(263);
+	case EKeyRIGHT:
+		return slGetKey(262);
+	case EKeyESC:
+		return slGetKey(256);
 	 default:
 	 	break;
 	}
@@ -56,12 +59,15 @@ void SigilGuiProvider::FillBackground(Color C) {
 	slSetBackColor(C.x / 255.f, C.y / 255.f, C.z / 255.f);
 }
 void SigilGuiProvider::DrawRectangle(FVec2 Origin, FVec2 Size, Color C) {
-	slSetForeColor(0.5, 0.0, 0.0, 0.5);
+	slSetForeColor(C.x / 255.f, C.y / 255.f, C.z / 255.f, 1);
 	slRectangleFill(Origin.x, Origin.y, Size.x, Size.y);
 }
 void SigilGuiProvider::DrawImage(FVec2 Origin, FVec2 Size, struct Image *I) {
+	int id = (int)(size_t)I;
+	slSprite(id, Origin.x, Origin.y, Size.x, Size.y);
 }
 void SigilGuiProvider::DrawText(FVec2 Origin, const char* Text, Color C) {
+	
 }
 void SigilGuiProvider::EndFrame() {
 	slRender();
