@@ -47,7 +47,7 @@ int main(int argc, char **argv)
 		"libgui_sigil.dylib",
 	};
 	EBackend CurrentBackend = EBackendCOUNT;
-	EBackend WantedBackend = EBackendDefault;
+	EBackend WantedBackend = EBackendSigil;
 
 	IGuiProvider *Gui = nullptr;
 	void *lib = nullptr;
@@ -63,7 +63,7 @@ int main(int argc, char **argv)
 		}
 	};
 
-	IVec2 CurrentWindowSize{400, 400};
+	IVec2 CurrentWindowSize{800, 800};
 
 	Snake S;
 	IVec2 Fruit = RandomLocation();
