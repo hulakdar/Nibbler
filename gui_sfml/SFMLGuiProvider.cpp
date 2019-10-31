@@ -10,7 +10,7 @@ extern "C" {
 }
 
 bool SFMLGuiProvider::Init(IVec2 WindowSize, const char *WindowName) {
-	Window.create(sf::VideoMode(WindowSize.x, WindowSize.y), WindowName);
+	Window.create(sf::VideoMode(WindowSize.x * 2, WindowSize.y * 2), WindowName);
 	Window.setVerticalSyncEnabled(true);
 	if (!Font.loadFromFile("resources/future.ttf"))
 		return false;

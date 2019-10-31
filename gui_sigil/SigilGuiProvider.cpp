@@ -9,7 +9,7 @@ extern "C" {
 }
 
 bool SigilGuiProvider::Init(IVec2 WindowSize, const char *WindowName) {
-	slWindow(WindowSize.x, WindowSize.y, WindowName, 0);
+	slWindow(WindowSize.x, WindowSize.y, "SIGIL Shapes Example", 0);
     return true;
 }
 
@@ -25,8 +25,8 @@ bool SigilGuiProvider::IsKeyDown(EKey K) {
 	// 	return sf::Keyboard::isKeyPressed(sf::Keyboard::Num2);
 	// case EKey3:
 	// 	return sf::Keyboard::isKeyPressed(sf::Keyboard::Num3);
-	// case EKeySPACE:
-	// 	return sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
+	 case EKeySPACE:
+	 	return slGetKey('W');
 	// case EKeyUP:
 	// 	return sf::Keyboard::isKeyPressed(sf::Keyboard::Up);
 	// case EKeyDOWN:
@@ -51,6 +51,8 @@ void SigilGuiProvider::FillBackground(Color C) {
 	slSetBackColor(C.x / 255.f, C.y / 255.f, C.z / 255.f);
 }
 void SigilGuiProvider::DrawRectangle(FVec2 Origin, FVec2 Size, Color C) {
+	slSetForeColor(0.5, 0.0, 0.0, 0.5);
+	slRectangleFill(Origin.x, Origin.y, Size.x, Size.y);
 }
 void SigilGuiProvider::DrawImage(FVec2 Origin, FVec2 Size, struct Image *I) {
 }
