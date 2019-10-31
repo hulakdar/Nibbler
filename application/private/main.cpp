@@ -92,7 +92,7 @@ int main(int argc, char **argv)
 		"libgui_sigil.dylib",
 	};
 	EBackend CurrentBackend = EBackendCOUNT;
-	EBackend WantedBackend = EBackendSigil;
+	EBackend WantedBackend = EBackendSDL;
 
 	IGuiProvider	*Gui = nullptr;
 	void			*lib = nullptr;
@@ -175,6 +175,8 @@ int main(int argc, char **argv)
 		if (CurrentGameState == EAreYouReady)
 		{	
 			Gui->FillBackground({0, 100, 250, 255});
+			// Gui->DrawText({400,400}, "Press space to start", ColorRed);
+			Gui->DrawStartScreen();
 			if (Gui->IsKeyDown(EKeySPACE))
 			{
 				S = Snake(FieldSize);
@@ -186,6 +188,8 @@ int main(int argc, char **argv)
 		else if (CurrentGameState == EYouLose)
 		{
 			Gui->FillBackground({50, 5, 10, 255});
+			// Gui->DrawText({400,400}, "You lost", ColorRed);
+			Gui->DrawEndScreen();
 			if (timer > 1.f)
 				CurrentGameState = EAreYouReady;
 		}

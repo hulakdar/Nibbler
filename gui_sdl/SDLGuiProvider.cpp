@@ -138,7 +138,7 @@ void SDLGuiProvider::DrawImage(FVec2 Origin, FVec2 Size, Image *I) {
 void SDLGuiProvider::DrawText(FVec2 Origin, const char* Text, Color C) {
 	SDL_Surface *ResultingText = TTF_RenderText_Solid(Font, Text, (SDL_Color){C.x, C.y, C.z, C.a});
 	SDL_Texture* Message = SDL_CreateTextureFromSurface(Renderer, ResultingText);
-	SDL_Rect rect = {(int)Origin.x, (int)Origin.y,200,100};
+	SDL_Rect rect = {(int)Origin.x, (int)Origin.y, (int)strlen(Text) * 20, 50};
 	SDL_RenderCopy(Renderer, Message, NULL, &rect);
 	SDL_FreeSurface(ResultingText);
 	ResultingText = nullptr;
