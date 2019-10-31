@@ -9,7 +9,7 @@ extern "C" {
 }
 
 bool SigilGuiProvider::Init(IVec2 WindowSize, const char *WindowName) {
-	slWindow(WindowSize.x, WindowSize.y, "SIGIL Shapes Example", 0);
+	slWindow(WindowSize.x, WindowSize.y, WindowName, 0);
 	slSetBackColor(0.0, 0.0, 0.0);
 	slSetAdditiveBlend(false);
     return true;

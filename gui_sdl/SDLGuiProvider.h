@@ -6,7 +6,7 @@
 class SDLGuiProvider : public IGuiProvider 
 {
 private:
-    SDL_Window      *Window;
+    SDL_Window      *Window = NULL;
     SDL_Surface     *WindowSurface = NULL;
     SDL_Renderer    *Renderer = NULL;
     bool            RequestingExit = false;

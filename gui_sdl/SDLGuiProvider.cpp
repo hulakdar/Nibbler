@@ -42,7 +42,7 @@ bool SDLGuiProvider::Init(IVec2 WindowSize, const char *WindowName) {
     return true;
 }
 
-Image * SDLGuiProvider::LoadImage(const char *FilePath) {
+Image *SDLGuiProvider::LoadImage(const char *FilePath) {
 	SDL_SetHint("SDL_HINT_RENDER_SCALE_QUALITY", 0);
     SDL_Surface* surface = IMG_Load( FilePath );
     if (!surface) {
@@ -116,7 +116,7 @@ void SDLGuiProvider::DrawRectangle(FVec2 Origin, FVec2 Size, Color C) {
 }
 void SDLGuiProvider::DrawImage(FVec2 Origin, FVec2 Size, Image *I) {
 	SDL_Rect rect {(int)Origin.x, (int)Origin.y, (int)Size.x, (int)Size.y};
-	SDL_RenderCopy( Renderer, (SDL_Texture *)I, NULL, &rect );
+	SDL_RenderCopy(Renderer, (SDL_Texture *)I, NULL, &rect);
 }
 void SDLGuiProvider::DrawText(FVec2 Origin, const char* Text, Color C) {
 }
@@ -124,6 +124,7 @@ void SDLGuiProvider::EndFrame() {
 	SDL_RenderPresent(Renderer);
 }
 void SDLGuiProvider::Deinit() {
+	IMG_Quit();
 	SDL_DestroyRenderer(Renderer);
     SDL_DestroyWindow(Window);
 	SDL_Quit();
