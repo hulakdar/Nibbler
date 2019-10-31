@@ -96,15 +96,18 @@ int main(int argc, char **argv)
 
 	IGuiProvider	*Gui = nullptr;
 	void			*lib = nullptr;
-	Image			*img = nullptr;
+	Image			*head = nullptr;
+	Image			*apple = nullptr;
 
-	auto cleanup = [&Gui, &lib, &img]() {
+	auto cleanup = [&]() {
 		if (Gui)
 		{
-			if (img)
+			if (head)
 			{
-				Gui->FreeImage(img);
-				img = nullptr;
+				Gui->FreeImage(head);
+				Gui->FreeImage(apple);
+				head = nullptr;
+				apple = nullptr;
 			}
 			Gui->Deinit();
 			Gui = nullptr;
@@ -159,13 +162,14 @@ int main(int argc, char **argv)
 				printf("Coudn't Init lib\n");
 				break;
 			}
-			img = Gui->LoadImage("resources/slime_face_2.png");
-			if (!img) {
+			head = Gui->LoadImage("resources/slime_face_2.png");
+			apple = Gui->LoadImage("resources/apple.png");
+			if (!head || !apple) {
 				printf("Coudn't load image\n");
 				break;
 			}
 			if (!Gui->LoadFont("resources/future.ttf")) {
-				printf("Coudn't load  font\n");
+				printf("Coudn't load font\n");
 				break;
 			}
 			CurrentBackend = WantedBackend;
@@ -251,11 +255,12 @@ int main(int argc, char **argv)
 			// Draw background
 			Gui->FillBackground({100, 100, 10, 255});
 			// Draw snake head
-			Gui->DrawImage(S.Body[0] * BlockSize, BlockSize, img);
+			Gui->DrawImage(S.Body[0] * BlockSize, BlockSize, head);
 			// Draw snake body
 			for (uint8_t i = 1; i < S.Length; i++)
 				Gui->DrawRectangle(S.Body[i] * BlockSize, BlockSize, (i & 1) ? ColorGreen : ColorYellow);
-			Gui->DrawRectangle(Fruit * BlockSize, BlockSize, ColorRed);
+			Gui->DrawImage(Fruit * BlockSize, BlockSize, apple);
+			//Gui->DrawRectangle(Fruit * BlockSize, BlockSize, ColorRed);
 			
 			std::string score = "Score: ";
 			score += std::to_string(S.Length - 3);

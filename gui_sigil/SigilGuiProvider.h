@@ -3,6 +3,7 @@
 class SigilGuiProvider : public IGuiProvider 
 {
 private:
+    int Font = 0;
 public:
     virtual bool Init(IVec2 WindowSize, const char *WindowName) override;
     virtual bool IsKeyDown(EKey K) override;

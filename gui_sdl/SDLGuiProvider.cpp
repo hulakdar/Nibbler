@@ -72,6 +72,7 @@ Image *SDLGuiProvider::LoadImage(const char *FilePath) {
 		return nullptr;
 	}
 	SDL_UpdateTexture(Texture, NULL, data, y * 3);
+	free(data);
 	return (Image *)Texture;
 }
 
