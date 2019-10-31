@@ -13,8 +13,6 @@ extern "C" {
 bool SFMLGuiProvider::Init(IVec2 WindowSize, const char *WindowName) {
 	Window.create(sf::VideoMode(WindowSize.x, WindowSize.y), WindowName);
 	Window.setVerticalSyncEnabled(true);
-	if (!Font.loadFromFile("resources/future.ttf"))
-		return false;
     return true;
 }
 
@@ -30,6 +28,11 @@ Image *SFMLGuiProvider::LoadImage(const char *ImagePath)
 }
 
 bool SFMLGuiProvider::LoadFont(const char *FontPath) {
+	if (!Font.loadFromFile(FontPath))
+		return false;
+	mText.setFont(Font);
+	mText.setCharacterSize(40);
+	mText.setStyle(sf::Text::Bold);
 	return true;
 }
 
@@ -96,6 +99,9 @@ void SFMLGuiProvider::DrawImage(FVec2 Origin, FVec2 Size, struct Image *I) {
 	Window.draw(sprite);
 }
 void SFMLGuiProvider::DrawText(FVec2 Origin, const char* Text, Color C) {
+	mText.setString(Text);
+	mText.setFillColor(sf::Color::Red);
+	Window.draw(mText);
 }
 void SFMLGuiProvider::EndFrame() {
 	Window.display();
