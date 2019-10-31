@@ -47,10 +47,11 @@ int main(int argc, char **argv)
 		"libgui_sigil.dylib",
 	};
 	EBackend CurrentBackend = EBackendCOUNT;
-	EBackend WantedBackend = EBackendSigil;
+	EBackend WantedBackend = EBackendSDL;
 
-	IGuiProvider *Gui = nullptr;
-	void *lib = nullptr;
+	IGuiProvider	*Gui = nullptr;
+	void			*lib = nullptr;
+	Image			*img = nullptr;
 
 	auto cleanup = [&Gui, &lib]() {
 		if (Gui)
@@ -96,11 +97,21 @@ int main(int argc, char **argv)
 			}
 			Gui = GetGui();
 			if (!Gui)
+			{
+				printf("Coudn't get entry point\n");
 				break;
+			}
 			if (!Gui->Init(CurrentWindowSize, "Nibbler"))
+			{
+				printf("Coudn't Init lib\n");
 				break;
-			if (!Gui->LoadImage("slime_face_2.png"))
+			}
+			img = Gui->LoadImage("slime_face_2.png");
+			if (!img)
+			{
+				printf("Coudn't load image\n");
 				break;
+			}
 			CurrentBackend = WantedBackend;
 		}
 
@@ -180,12 +191,10 @@ int main(int argc, char **argv)
 			// Draw background
 			Gui->FillBackground({100, 100, 10, 255});
 			// Draw snake head
-			// Gui->DrawRectangle(S.Body[0] * BlockSize, BlockSize, ColorGrey);
-			Gui->DrawImage(S.Body[0] * BlockSize, BlockSize, NULL);
+			Gui->DrawRectangle(S.Body[0] * BlockSize, BlockSize, ColorGrey);
 			// Draw snake body
 			for (uint8_t i = 1; i < S.Length; i++)
-				Gui->DrawImage(S.Body[i] * BlockSize, BlockSize, NULL);
-				// Gui->DrawRectangle(S.Body[i] * BlockSize, BlockSize, (i & 1) ? ColorGreen : ColorYellow);
+				Gui->DrawRectangle(S.Body[i] * BlockSize, BlockSize, (i & 1) ? ColorGreen : ColorYellow);
 			Gui->DrawRectangle(Fruit * BlockSize, BlockSize, ColorRed);
 		}
 		Gui->EndFrame();

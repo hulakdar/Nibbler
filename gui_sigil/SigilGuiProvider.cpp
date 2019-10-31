@@ -13,9 +13,14 @@ bool SigilGuiProvider::Init(IVec2 WindowSize, const char *WindowName) {
     return true;
 }
 
-bool SigilGuiProvider::LoadImage(const char *ImagePath) {
-	return true;
+Image *SigilGuiProvider::LoadImage(const char *ImagePath) {
+	return (Image*)42;
 }
+
+void SigilGuiProvider::FreeImage(Image *Image) {
+
+}
+
 bool SigilGuiProvider::IsKeyDown(EKey K) {
 	switch (K)
 	{

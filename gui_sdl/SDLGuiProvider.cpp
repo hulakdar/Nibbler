@@ -8,33 +8,6 @@ extern "C" {
 	}
 }
 
-SDL_Texture* SDLGuiProvider::loadTexture( std::string path )
-{
-    //The final texture
-    SDL_Texture* newTexture = NULL;
-
-    //Load image at specified path
-    SDL_Surface* loadedSurface = IMG_Load( path.c_str() );
-    if( loadedSurface == NULL )
-    {
-        printf( "Unable to load image %s! SDL_image Error: %s\n", path.c_str(), IMG_GetError() );
-    }
-    else
-    {
-        //Create texture from surface pixels
-        newTexture = SDL_CreateTextureFromSurface( Renderer, loadedSurface );
-        if( newTexture == NULL )
-        {
-            printf( "Unable to create texture from %s! SDL Error: %s\n", path.c_str(), SDL_GetError() );
-        }
-
-        //Get rid of old loaded surface
-        SDL_FreeSurface( loadedSurface );
-    }
-
-    return newTexture;
-}
-
 void put_error(std::string err) {
 	std::cout << err << std::endl;
 }
@@ -71,20 +44,27 @@ bool SDLGuiProvider::Init(IVec2 WindowSize, const char *WindowName) {
 	}
     return true;
 }
-bool SDLGuiProvider::LoadImage(const char *FilePath) {
+
+Image * SDLGuiProvider::LoadImage(const char *FilePath) {
     SDL_Surface* surface = IMG_Load( FilePath );
     if (!surface) {
         printf("Unable to load image %s! SDL_image Error: %s\n", FilePath, IMG_GetError());
-		return false;
+		return nullptr;
     }
-	Texture = SDL_CreateTextureFromSurface( Renderer, surface );
+	SDL_Texture *Texture = SDL_CreateTextureFromSurface( Renderer, surface );
 	if (!Texture) {
 		printf("Unable to create texture from %s! SDL Error: %s\n", FilePath, SDL_GetError());
-		return false;
+		return nullptr;
 	}
     SDL_FreeSurface(surface);
-	return true;
+	return (Image*)Texture;
 }
+
+void SDLGuiProvider::FreeImage(Image *Image)
+{
+	SDL_DestroyTexture((SDL_Texture*)Image);
+}
+
 bool SDLGuiProvider::IsKeyDown(EKey K) {
 	switch (K)
 	{
@@ -128,29 +108,25 @@ void SDLGuiProvider::Tick() {
 	}
 }
 void SDLGuiProvider::FillBackground(Color C) {
-	// SDL_FillRect(WindowSurface, NULL, SDL_MapRGB(WindowSurface->format, C.r, C.g, C.b));
+	//SDL_FillRect(WindowSurface, NULL, SDL_MapRGB(WindowSurface->format, C.r, C.g, C.b));
 }
 void SDLGuiProvider::DrawRectangle(FVec2 Origin, FVec2 Size, Color C) {
-	// SDL_Rect rect {(int)Origin.x, (int)Origin.y, (int)Size.x, (int)Size.y};
-	// SDL_FillRect(WindowSurface, &rect, SDL_MapRGB(WindowSurface->format, C.r, C.g, C.b));
+	//SDL_Rect rect {(int)Origin.x, (int)Origin.y, (int)Size.x, (int)Size.y};
+	//SDL_FillRect(WindowSurface, &rect, SDL_MapRGB(WindowSurface->format, C.r, C.g, C.b));
 }
-void SDLGuiProvider::DrawImage(FVec2 Origin, FVec2 Size, struct Image *I) {
-	SDL_RenderClear(Renderer);
+void SDLGuiProvider::DrawImage(FVec2 Origin, FVec2 Size, Image *I) {
+	//SDL_RenderClear(Renderer);
 	SDL_Rect rect {(int)Origin.x, (int)Origin.y, (int)Size.x, (int)Size.y};
-	SDL_RenderCopy( Renderer, Texture, NULL, &rect );
- 
-    // for ( const auto &p : enemies )
-    //     SDL_RenderCopy( Renderer, enemyTexture, NULL, &p.pos );
+	SDL_RenderCopy( Renderer, (SDL_Texture *)I, NULL, &rect );
 }
 void SDLGuiProvider::DrawText(FVec2 Origin, const char* Text, Color C) {
 }
 void SDLGuiProvider::EndFrame() {
-	SDL_UpdateWindowSurface(Window);
+	//SDL_UpdateWindowSurface(Window);
 	SDL_RenderPresent(Renderer);
 }
 void SDLGuiProvider::Deinit() {
 	SDL_DestroyRenderer(Renderer);
-	SDL_DestroyTexture(Texture);
     SDL_DestroyWindow(Window);
 	SDL_Quit();
 }

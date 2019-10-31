@@ -12,10 +12,10 @@ inline const Color ColorGrey{155, 155, 155, 255};
 
 enum EBackend
 {
-    EBackendSFML,
+    EBackendSFML = 0,
     EBackendDefault = EBackendSFML,
-    EBackendSDL,
-    EBackendSigil,
+    EBackendSDL = 1,
+    EBackendSigil = 2,
     EBackendCOUNT
 };
 

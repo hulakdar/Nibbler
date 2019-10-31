@@ -16,9 +16,15 @@ bool SFMLGuiProvider::Init(IVec2 WindowSize, const char *WindowName) {
 		return false;
     return true;
 }
-bool SFMLGuiProvider::LoadImage(const char *FilePath) {
-	return true;
+
+
+Image *SFMLGuiProvider::LoadImage(const char *ImagePath)
+{
+ return (Image*)42;
 }
+void SFMLGuiProvider::FreeImage(Image *Image) {
+}
+
 bool SFMLGuiProvider::IsKeyDown(EKey K) {
 	switch (K)
 	{
@@ -73,6 +79,7 @@ void SFMLGuiProvider::EndFrame() {
 	Window.display();
 }
 void SFMLGuiProvider::Deinit() {
+	Window.close();
 }
 SFMLGuiProvider::~SFMLGuiProvider() {
 }
