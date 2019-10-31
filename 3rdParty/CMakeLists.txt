@@ -60,8 +60,22 @@ target_compile_definitions(SDL2_image PRIVATE -DSDL_IMAGE_USE_COMMON_BACKEND)
 add_subdirectory( SDL_ttf )
 target_include_directories(SDL2_ttf PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/SDL_ttf/external/freetype-2.9.1/include)
 
+## GLEW
+set( glew-cmake_BUILD_SHARED OFF CACHE BOOL "Build the shared glew library" )
+set( glew-cmake_BUILD_STATIC ON CACHE BOOL "Build the static glew library" )
+set( glew-cmake_BUILD_SINGLE_CONTEXT ON CACHE BOOL "Build the single context glew library" )
+set( glew-cmake_BUILD_MULTI_CONTEXT OFF CACHE BOOL "Build the multi context glew library" )
+add_subdirectory( glew )
+
+add_library(glew::glew ALIAS libglew_static)
+
+set (GLEW_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/glew/include/)
+set (GLEW_LIBRARY ${CMAKE_BINARY_DIR}/lib)
+
 add_subdirectory( sigil )
 target_include_directories(sigil PRIVATE /usr/include/malloc)
+target_include_directories(sigil PRIVATE ${GLEW_INCLUDE_DIR})
+target_link_libraries(sigil libglew_static)
 ## imgui
 ##add_library (imgui-static STATIC	${CMAKE_CURRENT_SOURCE_DIR}/imgui/imgui.cpp
 #${CMAKE_CURRENT_SOURCE_DIR}/imgui/imgui_demo.cpp
