@@ -43,9 +43,9 @@ bool SigilGuiProvider::IsKeyDown(EKey K) {
 	case EKeySPACE:
 		return slGetKey(32);
 	case EKeyUP:
-		return slGetKey(264);
-	case EKeyDOWN:
 		return slGetKey(265);
+	case EKeyDOWN:
+		return slGetKey(264);
 	case EKeyLEFT:
 		return slGetKey(263);
 	case EKeyRIGHT:
