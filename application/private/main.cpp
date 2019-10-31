@@ -201,8 +201,11 @@ int main(int argc, char **argv)
 			Gui->DrawImage(S.Body[0] * BlockSize, BlockSize, img);
 			// Draw snake body
 			for (uint8_t i = 1; i < S.Length; i++)
-				Gui->DrawRectangle(S.Body[i] * BlockSize, BlockSize, (i & 1) ? ColorGreen : ColorYellow);
-			Gui->DrawRectangle(Fruit * BlockSize, BlockSize, ColorRed);
+				Gui->DrawImage(S.Body[i] * BlockSize, BlockSize, img);
+			Gui->DrawImage(Fruit * BlockSize, BlockSize, img);
+			// for (uint8_t i = 1; i < S.Length; i++)
+			// 	Gui->DrawRectangle(S.Body[i] * BlockSize, BlockSize, (i & 1) ? ColorGreen : ColorYellow);
+			// Gui->DrawRectangle(Fruit * BlockSize, BlockSize, ColorRed);
 		}
 		Gui->EndFrame();
 		if (Gui->ShouldExit() || Gui->IsKeyDown(EKeyESC))
