@@ -15,6 +15,8 @@ public:
     virtual bool LoadFont(const char *FontPath) = 0;
     virtual void DrawImage(FVec2 Origin, FVec2 Size) = 0;
     virtual void DrawText(FVec2 Origin, const char* Text, Color C) = 0;
+    virtual void DrawStartScreen() = 0;
+    virtual void DrawEndScreen() = 0;
     virtual void EndFrame() = 0;
     virtual void Deinit() = 0;
     virtual ~IGuiProvider() {};

@@ -21,9 +21,9 @@ bool SigilGuiProvider::LoadImage(const char *ImagePath) {
 }
 
 bool SigilGuiProvider::LoadFont(const char *FontPath) {
-	int font = slLoadFont(FontPath);
-	slSetFont(font, 80);
-	slSetTextAlign(SL_ALIGN_LEFT);
+	Font = slLoadFont(FontPath);
+	StartFont = slLoadFont(FontPath);
+	// EndFont = slLoadFont(FontPath);
 	return true;
 }
 
@@ -70,11 +70,33 @@ void SigilGuiProvider::DrawImage(FVec2 Origin, FVec2 Size) {
 	slSprite(Texture, Origin.x + Size.x / 2, Origin.y + Size.y / 2, Size.x, Size.y);
 }
 void SigilGuiProvider::DrawText(FVec2 Origin, const char* Text, Color C) {
+	slSetFont(Font, 80);
+	slSetTextAlign(SL_ALIGN_LEFT);
 	slPush();
 	slScale(1, -1);
 	slText(Origin.x, -Origin.y - slGetTextHeight(Text), Text);
 	slPop();
 }
+void SigilGuiProvider::DrawStartScreen() {
+	slSetForeColor(1.0, 1.0, 1.0, 1.0);
+	slSetFont(StartFont, 40);
+	slSetTextAlign(SL_ALIGN_CENTER);
+	slPush();
+	slScale(1, -1);
+	slText(400, -400 - slGetTextHeight("Press space to play"), "Press space to play");
+	slPop();
+}
+
+void SigilGuiProvider::DrawEndScreen() {
+	slSetForeColor(1.0, 1.0, 1.0, 1.0);
+	slSetFont(EndFont, 40);
+	slSetTextAlign(SL_ALIGN_CENTER);
+	slPush();
+	slScale(1, -1);
+	slText(400, -400 - slGetTextHeight("You lose"), "You lose");
+	slPop();
+}
+
 void SigilGuiProvider::EndFrame() {
 	slRender();
 }

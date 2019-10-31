@@ -94,8 +94,16 @@ void SFMLGuiProvider::DrawImage(FVec2 Origin, FVec2 Size) {
 }
 void SFMLGuiProvider::DrawText(FVec2 Origin, const char* Text, Color C) {
 	mText.setString(Text);
-	mText.setFillColor(sf::Color::Red);
+	mText.setFillColor(sf::Color(C.x, C.y, C.z, C.a));
+	mText.setPosition(Origin.x, Origin.y);
 	Window.draw(mText);
+}
+void SFMLGuiProvider::DrawStartScreen() {
+	DrawText({180, 400}, "Press space to play", ColorWhite);
+}
+
+void SFMLGuiProvider::DrawEndScreen() {
+	DrawText({300, 400}, "You lost", ColorWhite);
 }
 void SFMLGuiProvider::EndFrame() {
 	Window.display();

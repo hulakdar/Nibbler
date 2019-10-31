@@ -3,6 +3,9 @@
 class SigilGuiProvider : public IGuiProvider 
 {
 private:
+    int Font;
+    int StartFont;
+    int EndFont;
     int Texture;
 public:
     virtual bool Init(IVec2 WindowSize, const char *WindowName) override;
@@ -15,6 +18,8 @@ public:
     virtual bool LoadFont(const char *FontPath) override;
     virtual void DrawImage(FVec2 Origin, FVec2 Size) override;
     virtual void DrawText(FVec2 Origin, const char* Text, Color C) override;
+    virtual void DrawStartScreen() override;
+    virtual void DrawEndScreen() override;
     virtual void EndFrame() override;
     virtual void Deinit() override;
     virtual ~SigilGuiProvider() override;
