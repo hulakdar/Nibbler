@@ -20,6 +20,10 @@ Image *SigilGuiProvider::LoadImage(const char *ImagePath) {
 	return (Image*)(size_t)texture;
 }
 
+bool SigilGuiProvider::LoadFont(const char *FontPath) {
+	return true;
+}
+
 void SigilGuiProvider::FreeImage(Image *Image) {
 	(void)Image;
 }

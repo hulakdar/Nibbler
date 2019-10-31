@@ -28,6 +28,11 @@ Image *SFMLGuiProvider::LoadImage(const char *ImagePath)
 	delete result;
 	return nullptr;
 }
+
+bool SFMLGuiProvider::LoadFont(const char *FontPath) {
+	return true;
+}
+
 void SFMLGuiProvider::FreeImage(Image *Image) {
 	sf::Texture *target = (sf::Texture*)Image;
 	delete target;

@@ -58,6 +58,10 @@ Image *SDLGuiProvider::LoadImage(const char *FilePath) {
 	return (Image*)Texture;
 }
 
+bool SDLGuiProvider::LoadFont(const char *FontPath) {
+	return true;
+}
+
 void SDLGuiProvider::FreeImage(Image *Image)
 {
 	SDL_DestroyTexture((SDL_Texture*)Image);

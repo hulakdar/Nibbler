@@ -26,7 +26,7 @@ add_subdirectory(3rdParty)
 find_package(OpenGL 4.1 REQUIRED)
 
 if (APPLE)
-	target_compile_options(nibbler PRIVATE -Wall -Wextra) ########### TODO -Werror)
+	target_compile_options(nibbler PRIVATE -Wall -Wextra -g) ########### TODO -Werror)
 endif()
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
