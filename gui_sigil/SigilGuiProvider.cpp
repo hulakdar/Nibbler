@@ -71,10 +71,14 @@ void SigilGuiProvider::DrawRectangle(FVec2 Origin, FVec2 Size, Color C) {
 }
 void SigilGuiProvider::DrawImage(FVec2 Origin, FVec2 Size, struct Image *I) {
 	int id = (int)(size_t)I;
+	slSetForeColor(1.0, 1.0, 1.0, 1.0);
 	slSprite(id, Origin.x + Size.x / 2, Origin.y + Size.y / 2, Size.x, Size.y);
 }
 void SigilGuiProvider::DrawText(FVec2 Origin, const char* Text, Color C) {
-	slText(Origin.x, Origin.y, Text);
+	slPush();
+	slScale(1, -1);
+	slText(Origin.x, -Origin.y - slGetTextHeight(Text), Text);
+	slPop();
 }
 void SigilGuiProvider::EndFrame() {
 	slRender();
