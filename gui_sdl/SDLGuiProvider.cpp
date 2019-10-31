@@ -20,7 +20,7 @@ bool SDLGuiProvider::Init(IVec2 WindowSize, const char *WindowName) {
 	}
 	if (IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG) < 0)
 		put_error(SDL_GetError());
-	
+
 	Window = SDL_CreateWindow(WindowName,
 		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
 		WindowSize.x, WindowSize.y, SDL_WINDOW_SHOWN);

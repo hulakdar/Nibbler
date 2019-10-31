@@ -36,9 +36,9 @@ bool SigilGuiProvider::IsKeyDown(EKey K) {
 	case EKeySPACE:
 		return slGetKey(32);
 	case EKeyUP:
-		return slGetKey(264);
-	case EKeyDOWN:
 		return slGetKey(265);
+	case EKeyDOWN:
+		return slGetKey(264);
 	case EKeyLEFT:
 		return slGetKey(263);
 	case EKeyRIGHT:
@@ -60,11 +60,11 @@ void SigilGuiProvider::FillBackground(Color C) {
 }
 void SigilGuiProvider::DrawRectangle(FVec2 Origin, FVec2 Size, Color C) {
 	slSetForeColor(C.x / 255.f, C.y / 255.f, C.z / 255.f, 1);
-	slRectangleFill(Origin.x, Origin.y, Size.x, Size.y);
+	slRectangleFill(Origin.x + Size.x / 2, Origin.y + Size.y / 2, Size.x, Size.y);
 }
 void SigilGuiProvider::DrawImage(FVec2 Origin, FVec2 Size, struct Image *I) {
 	int id = (int)(size_t)I;
-	slSprite(id, Origin.x, Origin.y, Size.x, Size.y);
+	slSprite(id, Origin.x + Size.x / 2, Origin.y + Size.y / 2, Size.x, Size.y);
 }
 void SigilGuiProvider::DrawText(FVec2 Origin, const char* Text, Color C) {
 	
