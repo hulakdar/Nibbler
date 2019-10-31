@@ -18,8 +18,14 @@ bool SDLGuiProvider::Init(IVec2 WindowSize, const char *WindowName) {
 		put_error(SDL_GetError());
 		return false;
 	}
-	if (IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG) < 0)
-		put_error(SDL_GetError());
+	if (IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG) < 0) {
+		printf( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
+		return false;
+	}
+	if (TTF_Init() < 0) {
+		printf( "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError() );
+		return false;
+	}
 
 	Window = SDL_CreateWindow(WindowName,
 		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
@@ -59,7 +65,7 @@ Image *SDLGuiProvider::LoadImage(const char *FilePath) {
 }
 
 bool SDLGuiProvider::LoadFont(const char *FontPath) {
-	Font = TTF_OpenFont(FontPath, 12);
+	Font = TTF_OpenFont(FontPath, 28);
 	return Font != nullptr;
 }
 
@@ -124,12 +130,19 @@ void SDLGuiProvider::DrawImage(FVec2 Origin, FVec2 Size, Image *I) {
 	SDL_RenderCopy(Renderer, (SDL_Texture *)I, NULL, &rect);
 }
 void SDLGuiProvider::DrawText(FVec2 Origin, const char* Text, Color C) {
+	SDL_Surface *ResultingText = TTF_RenderText_Solid(Font, Text, (SDL_Color){C.x, C.y, C.z, C.a});
+	SDL_Texture* Message = SDL_CreateTextureFromSurface(Renderer, ResultingText);
+	SDL_Rect rect = {0,0,200,100};
+	SDL_RenderCopy(Renderer, Message, NULL, &rect);
+	SDL_FreeSurface(ResultingText);
+	ResultingText = nullptr;
 }
 void SDLGuiProvider::EndFrame() {
 	SDL_RenderPresent(Renderer);
 }
 void SDLGuiProvider::Deinit() {
 	TTF_CloseFont(Font);
+    TTF_Quit();
 	IMG_Quit();
 	SDL_DestroyRenderer(Renderer);
     SDL_DestroyWindow(Window);
