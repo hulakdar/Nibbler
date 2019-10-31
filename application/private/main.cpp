@@ -113,10 +113,14 @@ int main(int argc, char **argv)
 				printf("Coudn't Init lib\n");
 				break;
 			}
-			img = Gui->LoadImage("slime_face_2.png");
+			img = Gui->LoadImage("resources/slime_face_2.png");
 			if (!img)
 			{
 				printf("Coudn't load image\n");
+				break;
+			}
+			if (!Gui->LoadFont("resources/future.ttf")) {
+				printf("Coudn't load  font\n");
 				break;
 			}
 			CurrentBackend = WantedBackend;
@@ -210,9 +214,9 @@ int main(int argc, char **argv)
 		timer += 0.016f;
 
 		if (Gui->IsKeyDown(EKey1))
-			WantedBackend = EBackendSFML;
-		else if (Gui->IsKeyDown(EKey2))
 			WantedBackend = EBackendSDL;
+		else if (Gui->IsKeyDown(EKey2))
+			WantedBackend = EBackendSFML;
 		else if (Gui->IsKeyDown(EKey3))
 			WantedBackend = EBackendSigil;
 	}
