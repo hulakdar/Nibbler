@@ -17,14 +17,14 @@ bool SFMLGuiProvider::Init(IVec2 WindowSize, const char *WindowName) {
 }
 
 
-Image *SFMLGuiProvider::LoadImage(const char *ImagePath)
+bool SFMLGuiProvider::LoadImage(const char *ImagePath)
 {
-	sf::Texture *result = new sf::Texture();
+	Texture = new sf::Texture();
 	
-	if (result->loadFromFile(ImagePath))
-		return (Image *)result;
-	delete result;
-	return nullptr;
+	if (Texture->loadFromFile(ImagePath))
+		return true;
+	delete Texture;
+	return false;
 }
 
 bool SFMLGuiProvider::LoadFont(const char *FontPath) {
@@ -34,11 +34,6 @@ bool SFMLGuiProvider::LoadFont(const char *FontPath) {
 	mText.setCharacterSize(40);
 	mText.setStyle(sf::Text::Bold);
 	return true;
-}
-
-void SFMLGuiProvider::FreeImage(Image *Image) {
-	sf::Texture *target = (sf::Texture*)Image;
-	delete target;
 }
 
 bool SFMLGuiProvider::IsKeyDown(EKey K) {
@@ -87,13 +82,12 @@ void SFMLGuiProvider::DrawRectangle(FVec2 Origin, FVec2 Size, Color C) {
 	Rectangle.move(sf::Vector2f(Origin.x, Origin.y));
 	Window.draw(Rectangle);
 }
-void SFMLGuiProvider::DrawImage(FVec2 Origin, FVec2 Size, struct Image *I) {
+void SFMLGuiProvider::DrawImage(FVec2 Origin, FVec2 Size) {
 	sf::Sprite sprite;
-	sf::Texture *texture = (sf::Texture*)I;
-	sf::Vector2u size = texture->getSize();
+	sf::Vector2u size = Texture->getSize();
 	sf::Vector2f scale(Size.x / size.x, Size.y / size.y);
 
-	sprite.setTexture(*texture);
+	sprite.setTexture(*Texture);
 	sprite.setPosition(sf::Vector2f(Origin.x, Origin.y));
 	sprite.setScale(scale);
 	Window.draw(sprite);
@@ -107,6 +101,7 @@ void SFMLGuiProvider::EndFrame() {
 	Window.display();
 }
 void SFMLGuiProvider::Deinit() {
+	delete Texture;
 	Window.close();
 }
 SFMLGuiProvider::~SFMLGuiProvider() {

@@ -48,30 +48,35 @@ bool SDLGuiProvider::Init(IVec2 WindowSize, const char *WindowName) {
     return true;
 }
 
-Image *SDLGuiProvider::LoadImage(const char *FilePath) {
+bool replace(std::string& str, const std::string& from, const std::string& to) {
+    size_t start_pos = str.find(from);
+    if(start_pos == std::string::npos)
+        return false;
+    str.replace(start_pos, from.length(), to);
+    return true;
+}
+
+bool SDLGuiProvider::LoadImage(const char *FilePath) {
 	SDL_SetHint("SDL_HINT_RENDER_SCALE_QUALITY", 0);
-    SDL_Surface* surface = IMG_Load( FilePath );
+	std::string path = FilePath;
+	replace(path, ".png", ".bmp");
+    SDL_Surface* surface = SDL_LoadBMP( path.c_str() );
     if (!surface) {
         printf("Unable to load image %s! SDL_image Error: %s\n", FilePath, IMG_GetError());
-		return nullptr;
+		return false;
     }
-	SDL_Texture *Texture = SDL_CreateTextureFromSurface( Renderer, surface );
+	Texture = SDL_CreateTextureFromSurface( Renderer, surface );
 	if (!Texture) {
 		printf("Unable to create texture from %s! SDL Error: %s\n", FilePath, SDL_GetError());
-		return nullptr;
+		return false;
 	}
     SDL_FreeSurface(surface);
-	return (Image*)Texture;
+	return true;
 }
 
 bool SDLGuiProvider::LoadFont(const char *FontPath) {
 	Font = TTF_OpenFont(FontPath, 28);
 	return Font != nullptr;
-}
-
-void SDLGuiProvider::FreeImage(Image *Image)
-{
-	SDL_DestroyTexture((SDL_Texture*)Image);
 }
 
 bool SDLGuiProvider::IsKeyDown(EKey K) {
@@ -125,9 +130,9 @@ void SDLGuiProvider::DrawRectangle(FVec2 Origin, FVec2 Size, Color C) {
 	SDL_Rect rect {(int)Origin.x, (int)Origin.y, (int)Size.x, (int)Size.y};
 	SDL_RenderFillRect(Renderer, &rect);
 }
-void SDLGuiProvider::DrawImage(FVec2 Origin, FVec2 Size, Image *I) {
+void SDLGuiProvider::DrawImage(FVec2 Origin, FVec2 Size) {
 	SDL_Rect rect {(int)Origin.x, (int)Origin.y, (int)Size.x, (int)Size.y};
-	SDL_RenderCopy(Renderer, (SDL_Texture *)I, NULL, &rect);
+	SDL_RenderCopy(Renderer, Texture, NULL, &rect);
 }
 void SDLGuiProvider::DrawText(FVec2 Origin, const char* Text, Color C) {
 	SDL_Surface *ResultingText = TTF_RenderText_Solid(Font, Text, (SDL_Color){C.x, C.y, C.z, C.a});
@@ -142,10 +147,11 @@ void SDLGuiProvider::EndFrame() {
 }
 void SDLGuiProvider::Deinit() {
 	TTF_CloseFont(Font);
-    TTF_Quit();
-	IMG_Quit();
+	SDL_DestroyTexture(Texture);
 	SDL_DestroyRenderer(Renderer);
     SDL_DestroyWindow(Window);
+	TTF_Quit();
+	IMG_Quit();
 	SDL_Quit();
 }
 SDLGuiProvider::~SDLGuiProvider() {

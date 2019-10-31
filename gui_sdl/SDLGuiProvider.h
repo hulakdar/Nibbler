@@ -12,6 +12,7 @@ private:
     SDL_Surface     *WindowSurface = NULL;
     SDL_Renderer    *Renderer = NULL;
     TTF_Font        *Font = NULL;
+    SDL_Texture     *Texture = NULL;
     bool            RequestingExit = false;
     bool            keyStates[256];
 public:
@@ -21,10 +22,9 @@ public:
     virtual void Tick() override;
     virtual void FillBackground(Color C) override;
     virtual void DrawRectangle(FVec2 Origin, FVec2 Size, Color C) override;
-    virtual Image *LoadImage(const char *ImagePath) override;
+    virtual bool LoadImage(const char *ImagePath) override;
     virtual bool LoadFont(const char *FontPath) override;
-    virtual void FreeImage(Image *Image) override;
-    virtual void DrawImage(FVec2 Origin, FVec2 Size, Image *I) override;
+    virtual void DrawImage(FVec2 Origin, FVec2 Size) override;
     virtual void DrawText(FVec2 Origin, const char* Text, Color C) override;
     virtual void EndFrame() override;
     virtual void Deinit() override;

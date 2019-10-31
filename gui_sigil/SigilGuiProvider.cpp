@@ -15,9 +15,9 @@ bool SigilGuiProvider::Init(IVec2 WindowSize, const char *WindowName) {
     return true;
 }
 
-Image *SigilGuiProvider::LoadImage(const char *ImagePath) {
-	int texture = slLoadTexture(ImagePath);
-	return (Image*)(size_t)texture;
+bool SigilGuiProvider::LoadImage(const char *ImagePath) {
+	Texture = slLoadTexture(ImagePath);
+	return (true);
 }
 
 bool SigilGuiProvider::LoadFont(const char *FontPath) {
@@ -25,10 +25,6 @@ bool SigilGuiProvider::LoadFont(const char *FontPath) {
 	slSetFont(font, 80);
 	slSetTextAlign(SL_ALIGN_LEFT);
 	return true;
-}
-
-void SigilGuiProvider::FreeImage(Image *Image) {
-	(void)Image;
 }
 
 bool SigilGuiProvider::IsKeyDown(EKey K) {
@@ -69,10 +65,9 @@ void SigilGuiProvider::DrawRectangle(FVec2 Origin, FVec2 Size, Color C) {
 	slSetForeColor(C.x / 255.f, C.y / 255.f, C.z / 255.f, 1);
 	slRectangleFill(Origin.x + Size.x / 2, Origin.y + Size.y / 2, Size.x, Size.y);
 }
-void SigilGuiProvider::DrawImage(FVec2 Origin, FVec2 Size, struct Image *I) {
-	int id = (int)(size_t)I;
+void SigilGuiProvider::DrawImage(FVec2 Origin, FVec2 Size) {
 	slSetForeColor(1.0, 1.0, 1.0, 1.0);
-	slSprite(id, Origin.x + Size.x / 2, Origin.y + Size.y / 2, Size.x, Size.y);
+	slSprite(Texture, Origin.x + Size.x / 2, Origin.y + Size.y / 2, Size.x, Size.y);
 }
 void SigilGuiProvider::DrawText(FVec2 Origin, const char* Text, Color C) {
 	slPush();
