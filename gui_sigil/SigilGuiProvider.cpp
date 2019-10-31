@@ -18,9 +18,10 @@ bool SigilGuiProvider::Init(IVec2 WindowSize, const char *WindowName) {
     return true;
 }
 
-bool SigilGuiProvider::LoadImage(const char *ImagePath) {
+Image *SigilGuiProvider::LoadImage(const char *ImagePath) {
+    int Texture;
 	Texture = slLoadTexture(ImagePath);
-	return (true);
+	return (Image *)(size_t)Texture;
 }
 
 bool SigilGuiProvider::LoadFont(const char *FontPath) {
@@ -68,7 +69,11 @@ void SigilGuiProvider::DrawRectangle(FVec2 Origin, FVec2 Size, Color C) {
 	slSetForeColor(C.x / 255.f, C.y / 255.f, C.z / 255.f, 1);
 	slRectangleFill(Origin.x + Size.x / 2, Origin.y + Size.y / 2, Size.x, Size.y);
 }
-void SigilGuiProvider::DrawImage(FVec2 Origin, FVec2 Size) {
+void SigilGuiProvider::FreeImage(Image *I) {
+
+}
+void SigilGuiProvider::DrawImage(FVec2 Origin, FVec2 Size, Image *I) {
+    int Texture = (size_t)I;
 	slSetForeColor(1.0, 1.0, 1.0, 1.0);
 	slSprite(Texture, Origin.x + Size.x / 2, Origin.y + Size.y / 2, Size.x, Size.y);
 }

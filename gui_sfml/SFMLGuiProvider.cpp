@@ -18,15 +18,14 @@ bool SFMLGuiProvider::Init(IVec2 WindowSize, const char *WindowName) {
     return true;
 }
 
-
-bool SFMLGuiProvider::LoadImage(const char *ImagePath)
+Image *SFMLGuiProvider::LoadImage(const char *ImagePath)
 {
-	Texture = new sf::Texture();
+	sf::Texture *Texture = new sf::Texture();
 	
 	if (Texture->loadFromFile(ImagePath))
-		return true;
+		return (Image *)Texture;
 	delete Texture;
-	return false;
+	return nullptr;
 }
 
 bool SFMLGuiProvider::LoadFont(const char *FontPath) {
@@ -84,7 +83,8 @@ void SFMLGuiProvider::DrawRectangle(FVec2 Origin, FVec2 Size, Color C) {
 	Rectangle.move(sf::Vector2f(Origin.x, Origin.y));
 	Window.draw(Rectangle);
 }
-void SFMLGuiProvider::DrawImage(FVec2 Origin, FVec2 Size) {
+void SFMLGuiProvider::DrawImage(FVec2 Origin, FVec2 Size, Image *I) {
+    sf::Texture         *Texture = (sf::Texture*)I;
 	sf::Sprite sprite;
 	sf::Vector2u size = Texture->getSize();
 	sf::Vector2f scale(Size.x / size.x, Size.y / size.y);
@@ -102,8 +102,11 @@ void SFMLGuiProvider::DrawText(FVec2 Origin, const char* Text, Color C) {
 void SFMLGuiProvider::EndFrame() {
 	Window.display();
 }
-void SFMLGuiProvider::Deinit() {
+void SFMLGuiProvider::FreeImage(Image *I) {
+	sf::Texture *Texture = (sf::Texture*)I;
 	delete Texture;
+}
+void SFMLGuiProvider::Deinit() {
 	Window.close();
 }
 SFMLGuiProvider::~SFMLGuiProvider() {

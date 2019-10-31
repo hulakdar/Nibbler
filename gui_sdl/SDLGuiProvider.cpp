@@ -58,20 +58,21 @@ bool replace(std::string& str, const std::string& from, const std::string& to) {
     return true;
 }
 
-bool SDLGuiProvider::LoadImage(const char *FilePath) {
+Image *SDLGuiProvider::LoadImage(const char *FilePath) {
 	int x, y;
+    SDL_Texture     *Texture = NULL;
 
 	unsigned char *data = stbi_load(FilePath, &x, &y, NULL, 3);
 	if (!data)
-		return false;
+		return nullptr;
 	SDL_SetHint("SDL_HINT_RENDER_SCALE_QUALITY", 0);
 	Texture = SDL_CreateTexture(Renderer, SDL_PIXELFORMAT_RGB24, SDL_TEXTUREACCESS_STATIC, x, y);
 	if (!Texture) {
 		printf("Unable to create texture from %s! SDL Error: %s\n", FilePath, SDL_GetError());
-		return false;
+		return nullptr;
 	}
 	SDL_UpdateTexture(Texture, NULL, data, y * 3);
-	return true;
+	return (Image *)Texture;
 }
 
 bool SDLGuiProvider::LoadFont(const char *FontPath) {
@@ -130,9 +131,9 @@ void SDLGuiProvider::DrawRectangle(FVec2 Origin, FVec2 Size, Color C) {
 	SDL_Rect rect {(int)Origin.x, (int)Origin.y, (int)Size.x, (int)Size.y};
 	SDL_RenderFillRect(Renderer, &rect);
 }
-void SDLGuiProvider::DrawImage(FVec2 Origin, FVec2 Size) {
+void SDLGuiProvider::DrawImage(FVec2 Origin, FVec2 Size, Image *I) {
 	SDL_Rect rect {(int)Origin.x, (int)Origin.y, (int)Size.x, (int)Size.y};
-	SDL_RenderCopy(Renderer, Texture, NULL, &rect);
+	SDL_RenderCopy(Renderer, (SDL_Texture*)I, NULL, &rect);
 }
 void SDLGuiProvider::DrawText(FVec2 Origin, const char* Text, Color C) {
 	SDL_Surface *ResultingText = TTF_RenderText_Solid(Font, Text, (SDL_Color){C.x, C.y, C.z, C.a});
@@ -142,12 +143,15 @@ void SDLGuiProvider::DrawText(FVec2 Origin, const char* Text, Color C) {
 	SDL_FreeSurface(ResultingText);
 	ResultingText = nullptr;
 }
+void SDLGuiProvider::FreeImage(Image *I) {
+	SDL_Texture *Texture = (SDL_Texture*)I;
+	SDL_DestroyTexture(Texture);
+}
 void SDLGuiProvider::EndFrame() {
 	SDL_RenderPresent(Renderer);
 }
 void SDLGuiProvider::Deinit() {
 	TTF_CloseFont(Font);
-	SDL_DestroyTexture(Texture);
 	SDL_DestroyRenderer(Renderer);
     SDL_DestroyWindow(Window);
 	TTF_Quit();

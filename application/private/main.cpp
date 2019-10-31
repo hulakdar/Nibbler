@@ -96,16 +96,16 @@ int main(int argc, char **argv)
 
 	IGuiProvider	*Gui = nullptr;
 	void			*lib = nullptr;
-	// Image			*img = nullptr;
+	Image			*img = nullptr;
 
-	auto cleanup = [&Gui, &lib]() {
+	auto cleanup = [&Gui, &lib, &img]() {
 		if (Gui)
 		{
-			// if (img)
-			// {
-			// 	Gui->FreeImage(img);
-			// 	img = nullptr;
-			// }
+			if (img)
+			{
+				Gui->FreeImage(img);
+				img = nullptr;
+			}
 			Gui->Deinit();
 			Gui = nullptr;
 		}
@@ -159,15 +159,11 @@ int main(int argc, char **argv)
 				printf("Coudn't Init lib\n");
 				break;
 			}
-			if (!Gui->LoadImage("resources/slime_face_2.png")) {
+			img = Gui->LoadImage("resources/slime_face_2.png");
+			if (!img) {
 				printf("Coudn't load image\n");
 				break;
 			}
-			// if (!img)
-			// {
-			// 	printf("Coudn't load image\n");
-			// 	break;
-			// }
 			if (!Gui->LoadFont("resources/future.ttf")) {
 				printf("Coudn't load  font\n");
 				break;
@@ -253,7 +249,7 @@ int main(int argc, char **argv)
 			// Draw background
 			Gui->FillBackground({100, 100, 10, 255});
 			// Draw snake head
-			Gui->DrawImage(S.Body[0] * BlockSize, BlockSize);
+			Gui->DrawImage(S.Body[0] * BlockSize, BlockSize, img);
 			// Draw snake body
 			for (uint8_t i = 1; i < S.Length; i++)
 				Gui->DrawRectangle(S.Body[i] * BlockSize, BlockSize, (i & 1) ? ColorGreen : ColorYellow);
