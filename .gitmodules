@@ -16,3 +16,6 @@
 [submodule "3rdParty/sigil"]
 	path = 3rdParty/sigil
 	url = https://github.com/hulakdar/SIGIL.git
+[submodule "3rdParty/glew"]
+	path = 3rdParty/glew
+	url = https://github.com/Perlmint/glew-cmake
