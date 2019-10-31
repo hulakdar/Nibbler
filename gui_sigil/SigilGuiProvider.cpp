@@ -21,6 +21,9 @@ Image *SigilGuiProvider::LoadImage(const char *ImagePath) {
 }
 
 bool SigilGuiProvider::LoadFont(const char *FontPath) {
+	int font = slLoadFont(FontPath);
+	slSetFont(font, 80);
+	slSetTextAlign(SL_ALIGN_LEFT);
 	return true;
 }
 
@@ -40,9 +43,9 @@ bool SigilGuiProvider::IsKeyDown(EKey K) {
 	case EKeySPACE:
 		return slGetKey(32);
 	case EKeyUP:
-		return slGetKey(265);
-	case EKeyDOWN:
 		return slGetKey(264);
+	case EKeyDOWN:
+		return slGetKey(265);
 	case EKeyLEFT:
 		return slGetKey(263);
 	case EKeyRIGHT:
@@ -71,7 +74,7 @@ void SigilGuiProvider::DrawImage(FVec2 Origin, FVec2 Size, struct Image *I) {
 	slSprite(id, Origin.x + Size.x / 2, Origin.y + Size.y / 2, Size.x, Size.y);
 }
 void SigilGuiProvider::DrawText(FVec2 Origin, const char* Text, Color C) {
-	
+	slText(Origin.x, Origin.y, Text);
 }
 void SigilGuiProvider::EndFrame() {
 	slRender();

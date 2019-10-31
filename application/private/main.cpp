@@ -47,7 +47,7 @@ int main(int argc, char **argv)
 		"libgui_sigil.dylib",
 	};
 	EBackend CurrentBackend = EBackendCOUNT;
-	EBackend WantedBackend = EBackendSFML;
+	EBackend WantedBackend = EBackendSigil;
 
 	IGuiProvider	*Gui = nullptr;
 	void			*lib = nullptr;
@@ -207,6 +207,7 @@ int main(int argc, char **argv)
 			for (uint8_t i = 1; i < S.Length; i++)
 				Gui->DrawRectangle(S.Body[i] * BlockSize, BlockSize, (i & 1) ? ColorGreen : ColorYellow);
 			Gui->DrawRectangle(Fruit * BlockSize, BlockSize, ColorRed);
+			Gui->DrawText({10,10}, "Score: ", ColorRed);
 		}
 		Gui->EndFrame();
 		if (Gui->ShouldExit() || Gui->IsKeyDown(EKeyESC))
