@@ -1,10 +1,9 @@
 #include <cstdio>
 #include <dlfcn.h>
+#include <vector>
+#include <string>
 
 #include "GuiProvider.h"
-
-constexpr IVec2 FieldSize	{20, 20};
-constexpr IVec2 FieldCenter = FieldSize / 2;
 
 enum EDirection
 {
@@ -23,20 +22,66 @@ enum EGameState
 
 struct Snake
 {
-	IVec2		Body[FieldSize.x * FieldSize.y] = {
-		FieldCenter,
-		FieldCenter + IVec2{0, 1},
-		FieldCenter + IVec2{0, 2},
-		FieldCenter + IVec2{0, 3},
-		{0,0}
-		};
+	std::vector<IVec2> Body;
 	uint8_t		Length = 4;
 	EDirection	Direction = EDirUP;
+
+	Snake (IVec2 FieldSize) : Body(FieldSize.x * FieldSize.y)
+	{
+		IVec2 FieldCenter = FieldSize / 2;
+		Body[0] = FieldCenter;
+		Body[1] = FieldCenter + IVec2{0, 1};
+		Body[2] = FieldCenter + IVec2{0, 2};
+		Body[3] = FieldCenter + IVec2{0, 3};
+	}
 };
 
-IVec2 RandomLocation()
+IVec2 RandomLocation(Snake S, IVec2 FieldSize)
 {
-	return glm::abs(IVec2{rand(), rand()}) % FieldSize;
+	IVec2 randomPlace = glm::abs(IVec2{rand(), rand()}) % FieldSize;
+	bool fruitOverlapsBody;
+	do {
+		fruitOverlapsBody = false;
+		for (auto & bodyPart : S.Body) {
+			if (bodyPart == randomPlace) {
+				randomPlace = glm::abs(IVec2{rand(), rand()}) % FieldSize;
+				fruitOverlapsBody = true;
+			}
+		}
+	} while (fruitOverlapsBody);
+	return randomPlace;
+}
+
+IVec2 parseArgc(int argc, char **argv) {
+	if (argc != 3) {
+		printf("Usage: ./nibbler {width} {height}\n");
+		exit(0);
+	}
+	int width = atoi(argv[1]);
+	int height = atoi(argv[2]);
+
+	if (width < 10) {
+		printf("Gameboard Width < 10\n");
+		exit(0);
+	}
+	if (width > 30) {
+		printf("Gameboard Width > 30\n");
+		exit(0);
+	}
+
+	if (height < 10) {
+		printf("Gameboard Height < 10\n");
+		exit(0);
+	}
+	if (height > 30) {
+		printf("Gameboard Width > 30\n");
+		exit(0);
+	}
+	if (width != height) {
+		printf("Gameboard Board is'nt round.\n");
+		exit(0);
+	}
+	return {width, height};
 }
 
 int main(int argc, char **argv)
@@ -71,10 +116,11 @@ int main(int argc, char **argv)
 		}
 	};
 
-	IVec2 CurrentWindowSize{800, 800};
+	IVec2 CurrentWindowSize {800, 800};
+	IVec2 FieldSize = parseArgc(argc, argv);
 
-	Snake S;
-	IVec2 Fruit = RandomLocation();
+	Snake S(FieldSize);
+	IVec2 Fruit = RandomLocation(S, FieldSize);
 
 	float timer = 0;
 	EGameState CurrentGameState = EAreYouReady;
@@ -132,8 +178,8 @@ int main(int argc, char **argv)
 			Gui->FillBackground({0, 100, 250, 255});
 			if (Gui->IsKeyDown(EKeySPACE))
 			{
-				S = Snake();
-				Fruit = RandomLocation();
+				S = Snake(FieldSize);
+				Fruit = RandomLocation(S, FieldSize);
 				CurrentGameState = EGameplay;
 				timer = 0;
 			}
@@ -195,19 +241,25 @@ int main(int argc, char **argv)
 				if (S.Body[0] == Fruit)
 				{
 					S.Length++;
-					Fruit = RandomLocation();
+					if (S.Length != FieldSize.x * FieldSize.y) {
+						Fruit = RandomLocation(S, FieldSize);
+					}
 				}
 				timer -= 0.25f;
 			}
 			// Draw background
 			Gui->FillBackground({100, 100, 10, 255});
 			// Draw snake head
+			printf("%d %d\n", S.Body[0].x, S.Body[0].y);
 			Gui->DrawImage(S.Body[0] * BlockSize, BlockSize, img);
 			// Draw snake body
 			for (uint8_t i = 1; i < S.Length; i++)
 				Gui->DrawRectangle(S.Body[i] * BlockSize, BlockSize, (i & 1) ? ColorGreen : ColorYellow);
 			Gui->DrawRectangle(Fruit * BlockSize, BlockSize, ColorRed);
-			Gui->DrawText({10,10}, "Score: ", ColorRed);
+			
+			std::string score = "Score: ";
+			score += std::to_string(S.Length - 3);
+			Gui->DrawText({10,10}, score.c_str(), ColorRed);
 		}
 		Gui->EndFrame();
 		if (Gui->ShouldExit() || Gui->IsKeyDown(EKeyESC))
