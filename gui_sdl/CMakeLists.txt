@@ -9,11 +9,11 @@ set_target_properties(gui_sdl PROPERTIES
 
 target_link_libraries (gui_sdl PRIVATE
 	SDL2-static
-	SDL2_image
 	SDL2_ttf
 	glm
 )
 target_include_directories(gui_sdl PRIVATE
 	${CMAKE_SOURCE_DIR}/3rdParty/SDL_ttf
+	${CMAKE_SOURCE_DIR}/3rdParty/stbi
 )
 

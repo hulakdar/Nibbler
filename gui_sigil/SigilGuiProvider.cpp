@@ -1,5 +1,6 @@
 #include "SigilGuiProvider.h"
 #include <sl.h>
+#include <string>
 
 extern "C" {
 	IGuiProvider *GetProvider() {
@@ -9,7 +10,9 @@ extern "C" {
 }
 
 bool SigilGuiProvider::Init(IVec2 WindowSize, const char *WindowName) {
-	slWindow(WindowSize.x, WindowSize.y, WindowName, 0);
+	std::string FinalName = WindowName;
+	FinalName += ", SIGIL";
+	slWindow(WindowSize.x, WindowSize.y, FinalName.c_str(), 0);
 	slSetBackColor(0.0, 0.0, 0.0);
 	slSetAdditiveBlend(false);
     return true;

@@ -11,7 +11,9 @@ extern "C" {
 }
 
 bool SFMLGuiProvider::Init(IVec2 WindowSize, const char *WindowName) {
-	Window.create(sf::VideoMode(WindowSize.x, WindowSize.y), WindowName);
+	std::string FinalName = WindowName;
+	FinalName += ", SFML";
+	Window.create(sf::VideoMode(WindowSize.x, WindowSize.y), FinalName);
 	Window.setVerticalSyncEnabled(true);
     return true;
 }

@@ -238,7 +238,7 @@ int main(int argc, char **argv)
 					if (S.Body[0] == S.Body[i])
 						lose();
 				// Hit perimeter
-				if (S.Body[0].x < 0 || S.Body[0].y < 0 || S.Body[0].x >= FieldSize.x || S.Body[0].y > FieldSize.x)
+				if (S.Body[0].x < 0 || S.Body[0].y < 0 || S.Body[0].x >= FieldSize.x || S.Body[0].y >= FieldSize.x)
 					lose();
 				// Eat fruit
 				if (S.Body[0] == Fruit)

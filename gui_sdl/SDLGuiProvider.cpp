@@ -1,6 +1,9 @@
 #include "SDLGuiProvider.h"
 #include <iostream>
 
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.h"
+
 extern "C" {
 	IGuiProvider *GetProvider() {
 		static SDLGuiProvider lib;
@@ -18,16 +21,15 @@ bool SDLGuiProvider::Init(IVec2 WindowSize, const char *WindowName) {
 		put_error(SDL_GetError());
 		return false;
 	}
-	if (IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG) < 0) {
-		printf( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
-		return false;
-	}
 	if (TTF_Init() < 0) {
 		printf( "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError() );
 		return false;
 	}
 
-	Window = SDL_CreateWindow(WindowName,
+	std::string FinalName = WindowName;
+	FinalName += ", SDL";
+
+	Window = SDL_CreateWindow(FinalName.c_str(),
 		SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
 		WindowSize.x, WindowSize.y, SDL_WINDOW_SHOWN);
 	if (!Window)
@@ -57,20 +59,18 @@ bool replace(std::string& str, const std::string& from, const std::string& to) {
 }
 
 bool SDLGuiProvider::LoadImage(const char *FilePath) {
-	SDL_SetHint("SDL_HINT_RENDER_SCALE_QUALITY", 0);
-	std::string path = FilePath;
-	replace(path, ".png", ".bmp");
-    SDL_Surface* surface = SDL_LoadBMP( path.c_str() );
-    if (!surface) {
-        printf("Unable to load image %s! SDL_image Error: %s\n", FilePath, IMG_GetError());
+	int x, y;
+
+	unsigned char *data = stbi_load(FilePath, &x, &y, NULL, 3);
+	if (!data)
 		return false;
-    }
-	Texture = SDL_CreateTextureFromSurface( Renderer, surface );
+	SDL_SetHint("SDL_HINT_RENDER_SCALE_QUALITY", 0);
+	Texture = SDL_CreateTexture(Renderer, SDL_PIXELFORMAT_RGB24, SDL_TEXTUREACCESS_STATIC, x, y);
 	if (!Texture) {
 		printf("Unable to create texture from %s! SDL Error: %s\n", FilePath, SDL_GetError());
 		return false;
 	}
-    SDL_FreeSurface(surface);
+	SDL_UpdateTexture(Texture, NULL, data, y * 3);
 	return true;
 }
 
@@ -151,7 +151,6 @@ void SDLGuiProvider::Deinit() {
 	SDL_DestroyRenderer(Renderer);
     SDL_DestroyWindow(Window);
 	TTF_Quit();
-	IMG_Quit();
 	SDL_Quit();
 }
 SDLGuiProvider::~SDLGuiProvider() {

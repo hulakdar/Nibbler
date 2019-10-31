@@ -19,3 +19,6 @@
 [submodule "3rdParty/glew"]
 	path = 3rdParty/glew
 	url = https://github.com/Perlmint/glew-cmake
+[submodule "3rdParty/stbi"]
+	path = 3rdParty/stbi
+	url = https://Arxcel@bitbucket.org/Arxcel/stb_image_mirror.git
